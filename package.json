@@ -1,0 +1,26 @@
+{
+  "name": "nodeadfilter",
+  "version": "1.0.0",
+  "description": "simple icap server for blocking ads and by white\\black pages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/horpto/nodeadfilter.git"
+  },
+  "keywords": [
+    "icap",
+    "ad",
+    "blocking",
+    "ad",
+    "ads"
+  ],
+  "author": "Al. Menshchikov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/horpto/nodeadfilter/issues"
+  },
+  "homepage": "https://github.com/horpto/nodeadfilter"
+}
