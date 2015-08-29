@@ -1,6 +1,6 @@
 "strict"
 
-var util = require("util");
+var merge = require("merge");
 var path = require("path");
 var fs = require("fs");
 var Config = require("key-value-conf");
@@ -10,24 +10,24 @@ var flag = fs.existsSync(config_file);
 
 var config  = new Config(flag ? config_file : {});
 // FIXME: это хак
-util._extend(config.get(), {
+merge.recursive(config.get(), {
   "config_file": config_file,
-  "plugin": {
+  "plugins": {
     "icap_server": {
-      "status": "off",
+      "status": "off", // on
       "port": 1344
     },
     "proxy": {
-      "status": "off"
+      "status": "on",
+      "port": 8081
     }
   },
- "options": {
-    "port": 8888,
-    "debug": false,
-    "service": "NodeAdFilter",
-    "white_list": "./json/white_list.json",
-    "black_list": "./json/black_list.json"
-  }
+  "cluster": -1,
+  "port": 8888,
+  "debug": false,
+  "service": "NodeAdFilter",
+  "white_list": "./json/white_list.json",
+  "black_list": "./json/black_list.json"
 });
 
 module.exports = config.get();
