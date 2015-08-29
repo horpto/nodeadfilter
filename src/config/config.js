@@ -24,7 +24,7 @@ merge.recursive(config.get(), {
   },
   "cluster": -1,
   "port": 8888,
-  "debug": false,
+  "debug": "info",
   "service": "NodeAdFilter",
   "white_list": "./json/white_list.json",
   "black_list": "./json/black_list.json"
@@ -43,7 +43,7 @@ function readJsonSync(name) {
     try {
       return require(name);
     } catch (err) {
-      console.log("Cannot read file:", name, err.stack);
+      console.error("Cannot read file:", name, err.stack);
     }
   }
   return {};

@@ -36,11 +36,16 @@ function init(options) {
       port: origin_url.port,
       headers: req.headers,
       keepAlive: req.headers['connection'] != 'close',
-    },  function (res1) {
-      console.info("Origin server response:", res1.statusCode, res1.headers);
-      res.writeHead(res1.statusCode, http.STATUS_CODES[res1.statusCode], res1.headers);
-      res1.pipe(res);
-      res.pipe(res1);
+    },  function (origin_res) {
+      var statusCode = origin_res.statusCode;
+      var headers = origin_res.headers;
+
+      console.info("Origin server response:", origin_url.hostname, statusCode);
+      console.log("Headers: %j", headers);
+
+      res.writeHead(statusCode, http.STATUS_CODES[statusCode], headers);
+      origin_res.pipe(res);
+      res.pipe(origin_res);
     });
     origin_req.on("error", function (err) {
       console.error("Origin server request error", err.stack);
@@ -67,6 +72,11 @@ function init(options) {
     console.error("Proxy error:", err.stack);
     socket.end();
   });
+
+  proxy.on("clientError", function(err, socket) {
+    console.error("Proxy client error:", err.stack);
+    socket.end();
+  })
 
   proxy.on("close", function() {
     console.info("Proxy server closing");

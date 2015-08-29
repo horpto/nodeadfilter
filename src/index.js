@@ -1,8 +1,10 @@
 "strict"
 
 process.on('uncaughtException', function(err) {
-  console.log('Caught exception: ' + err);
+  console.error('Caught exception: ' + err);
 });
+
+require('./config/logging');
 
 var numCPUs = require("os").cpus().length;
 var config = require("./config/config");
@@ -15,7 +17,7 @@ var app = express();
 require("./config/routes")(app);
 
 app.listen(config.port, function() {
-  console.log("listening on port:", config.port);
+  console.info("listening on port:", config.port);
 });
 */
 
@@ -36,16 +38,16 @@ if (_workers == null || _workers == 0) {
 
   cluster.on("exit", function(worker, code, signal) {
     if (worker.suicide === true) {
-      console.log("Worker commit suicide:", worker.id);
+      console.info("Worker commit suicide:", worker.id);
       return;
     }
-    console.log("Worker send code:", code || signal);
+    console.error("Worker send code:", code || signal);
     cluster.fork();
   });
 }
 
 process.on('SIGINT', function() {
-  console.log('Got SIGINT.');
+  console.error('Got SIGINT.');
   for (var id in cluster.workers) {
     cluster.workers[id].kill();
   }

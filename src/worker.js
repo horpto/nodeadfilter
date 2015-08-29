@@ -1,10 +1,17 @@
 "strict"
 
+require('./config/logging');
+
 var config = require("./config/config");
 var cluster = require("cluster");
 
 if (cluster.isWorker) {
   load(config.plugins);
+
+  process.on('uncaughtException', function(err) {
+    console.error('Worker(%d), pid[%d] caught exceptions: %s',
+                  cluster.worker.id, process.pid, err.stack);
+  });
 }
 
 module.exports.loadPlugin = loadPlugin;
@@ -28,7 +35,8 @@ function load(plugins) {
     options = config.plugins[plugin];
 
     if (options == null ||
-        options.status == null || options.status === "off") {
+        options.status == null ||
+        options.status === "off") {
       continue;
     }
     try {

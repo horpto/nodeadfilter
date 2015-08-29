@@ -27,5 +27,8 @@
     "express": "^4.13.3",
     "key-value-conf": "^0.9.2",
     "merge": "^1.2.0"
+  },
+  "devDependencies": {
+    "longjohn": "^0.2.8"
   }
 }
