@@ -1,0 +1,53 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="page-title">White list</h3>
+  </div>
+  <div class="panel-body">
+    <button type="button" class="btn btn-danger col-md-1 gutter-right" onclick="removeAll(whiteList)">Remove all</button>
+    <button type="button" class="btn btn-success col-md-1" onclick="addSite(whiteList)">Add site</button>
+    <div class="col-md-2">
+      <input id="input_whiteList" class="form-control" placeholder="URL">
+    </div>
+  </div>
+  <table id="whitelist" class="table table-striped">
+
+    <thead>
+      <th class="col-md-1"> # </th>
+      <th>URL</th>
+    </thead>
+    <tbody>
+      <!-- пример -->
+      <tr>
+        <td class="col-md-1">1</td>
+        <td><a href="http://yandex.ru">yandex.ru</a></td>
+        <td><span class="glyphicon glyphicon-remove"></span></td>
+      </tr>
+      <tr>
+        <td class="col-md-1">2</td>
+        <td><a href="http://google.com">yandex.ru</a></td>
+        <td><span class="glyphicon glyphicon-remove"></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+// можно обойтись и без этого, взято из примера
+//|
+//| view controller
+//|
+//| Note the name below shall match id of the section
+//|
+  window.app.page("white-list-section", function() // registering the controller
+  {
+    // initialize view variables in localscope
+
+    // presenter of the view - load data and show:
+    return function(params) {
+
+
+    }
+  });
+</script>

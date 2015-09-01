@@ -1,17 +1,18 @@
 "strict"
 
 process.on('uncaughtException', function(err) {
-  console.error('Caught exception: ' + err);
+  console.error('Caught exception:', err.stack);
 });
 
 require('./config/logging');
 
 var numCPUs = require("os").cpus().length;
-var config = require("./config/config");
 var express = require("express");
 var cluster = require("cluster");
 
-/*
+var config = require("./config/config");
+var eachWorker = require("./utils/reload_workers").eachWorker;
+
 var app = express();
 
 require("./config/routes")(app);
@@ -19,7 +20,6 @@ require("./config/routes")(app);
 app.listen(config.port, function() {
   console.info("listening on port:", config.port);
 });
-*/
 
 var _workers = config.cluster;
 if (_workers == null || _workers == 0) {
@@ -48,8 +48,8 @@ if (_workers == null || _workers == 0) {
 
 process.on('SIGINT', function() {
   console.error('Got SIGINT.');
-  for (var id in cluster.workers) {
-    cluster.workers[id].kill();
-  }
+  eachWorker(function (worker) {
+    worker.kill();
+  });
   process.exit();
 });

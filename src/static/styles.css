@@ -1,0 +1,49 @@
+
+/* и все таки это хак */
+body {
+  padding-top: 50px;
+}
+
+/* нужны, чтобы только некоторые секции показывались */
+body > section:not(.active) {
+   display: none;
+}
+body > section.active {
+  display: block;
+}
+
+/* желоб справа от кнопки */
+.gutter-right {
+  margin-right: 5px;
+}
+
+/* OLD STUFF */
+
+.lft{
+  float: left;
+  margin-left: 15%;
+}
+.rght{
+  float: right;
+  margin-right: 15%;
+}
+
+.up{
+  margin-top: -5px;
+}
+
+.lists{
+  border: solid 3px gray;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+div.outer {
+    margin-bottom: 3px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.outer {
+  width: 80px;
+}
