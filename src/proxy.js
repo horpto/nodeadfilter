@@ -8,8 +8,9 @@ var extend = require('util')._extend;
 module.exports.init = init;
 
 function init(options) {
+  http.globalAgent.maxSockets = 20000;
   var proxy = http.createServer(function (req, res) {
-    console.info("Connection event", req.url);
+    console.info("Connection event", req.method, req.url);
     /*
     host: A domain name or IP address of the server to issue the request to. Defaults to 'localhost'.
     hostname: To support url.parse() hostname is preferred over host
@@ -44,13 +45,23 @@ function init(options) {
       console.log("Headers: %j", headers);
 
       res.writeHead(statusCode, http.STATUS_CODES[statusCode], headers);
+      origin_res.on("error", function(err) {
+        console.error("Origin server", origin_url.hostname, "response error:", err.stack);
+        origin_req.abort();
+        origin_res.end();
+        res.end();
+      })
       origin_res.pipe(res);
       res.pipe(origin_res);
     });
     origin_req.on("error", function (err) {
-      console.error("Origin server request error", err.stack);
+      console.error("Origin server", origin_url.hostname, "request error:", err.stack);
+      console.error("HEAD:", req.headers);
+      origin_req.abort();
     });
-    origin_req.end();
+
+    origin_req.setNoDelay();
+    req.pipe(origin_req);
   });
 
   proxy.on("connect", function(req, cltSocket, head) {
@@ -69,12 +80,12 @@ function init(options) {
   });
 
   proxy.on("error", function(err, socket){
-    console.error("Proxy error:", err.stack);
+    console.error("Proxy error:", err.stack, socket.remoteAddress +':' + socket.remotePort);
     socket.end();
   });
 
   proxy.on("clientError", function(err, socket) {
-    console.error("Proxy client error:", err.stack);
+    console.error("Proxy client error:", err.stack, socket.remoteAddress +':' + socket.remotePort);
     socket.end();
   })
 
