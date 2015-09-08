@@ -30,5 +30,14 @@ function log(level, method) {
   }
   if (LEVELS[level] < LEVELS[debug]) {
     console[method] = noop;
+  } else {
+    var origin_method = console[method];
+
+    console[method] = function () {
+      var args = Array.prototype.slice.call(arguments, 0);
+
+      args[0] = new Date().toISOString() + ': ' + args[0];
+      origin_method.apply(this, args);
+    }
   }
 }
