@@ -5,7 +5,8 @@ var ICAPServer = require('nodecap').ICAPServer;
 require('./config/logging');
 
 module.exports = function (options) {
-  console.verbose = console.info;
+  // небольшой хак для логов
+  console.verbose = console.log;
 
   var server = new ICAPServer({
     debug: console
