@@ -50,7 +50,7 @@ function init(options) {
         origin_req.abort();
         origin_res.end();
         res.end();
-      })
+      });
       origin_res.pipe(res);
       res.pipe(origin_res);
     });
@@ -80,18 +80,18 @@ function init(options) {
   });
 
   proxy.on("error", function(err, socket){
-    console.error("Proxy error:", err.stack, socket.remoteAddress +':' + socket.remotePort);
+    console.error("Proxy error:", err.stack);
     socket.end();
   });
 
   proxy.on("clientError", function(err, socket) {
-    console.error("Proxy client error:", err.stack, socket.remoteAddress +':' + socket.remotePort);
+    console.error("Proxy client error:", err.stack);
     socket.end();
-  })
+  });
 
   proxy.on("close", function() {
     console.info("Proxy server closing");
-  })
+  });
 
   proxy.listen(options.port, function() {
     console.info("Listen port:", options.port);
