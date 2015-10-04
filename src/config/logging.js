@@ -5,7 +5,8 @@ var debug = config.debug;
 
 if (debug == null || debug == "all") {
   debug = "debug";
-  require('longjohn');
+  var longjohn = require('longjohn');
+  longjohn.async_trace_limit = -1;
 }
 
 var LEVELS = {
